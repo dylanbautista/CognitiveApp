@@ -9,15 +9,25 @@ import UIKit
 
 class FluencyVC: AnyObject {
     
-    var fluencyDC : FluencyDomainController;
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
+//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+//            super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+//            // Your custom setup here
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//            super.init(coder: coder)
+//            // Or, if you don’t support storyboard initialization:
+//            fatalError("init(coder:) has not been implemented")
+//    }
+//    var fluencyDC : FluencyDomainController;
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        // Do any additional setup after loading the view.
+//    }
     
     func initDomainController(controller : FluencyDomainController) {
-        fluencyDC = controller;
+//        fluencyDC = controller;
     }
     
 }

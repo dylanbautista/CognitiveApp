@@ -4,5 +4,4 @@ struct User: Identifiable, Codable {
     let surname: String
     let surname2: String?
     let email: String
-    let age: Int?
 }

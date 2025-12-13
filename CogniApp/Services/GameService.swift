@@ -29,4 +29,17 @@ class GameService {
             }
         }
     }
+
+    func fetchGameResults(forGameType gameType: GameType, completion: @escaping (Result<[GameResult], Error>) -> Void) {
+        db.collection("gameResults").whereField("gameType", isEqualTo: gameType.rawValue).getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                let results: [GameResult] = snapshot?.documents.compactMap { document in
+                    return try? document.data(as: GameResult.self)
+                } ?? []
+                completion(.success(results))
+            }
+        }
+    }
 }

@@ -1,3 +1,6 @@
+import Foundation
+import AnyCodable
+
 struct GameResult: Codable {
     let userId: String
     let gameType: GameType
