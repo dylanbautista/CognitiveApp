@@ -16,6 +16,7 @@ class SurveyService {
                     completion(nil)
                 } else {
                     let log = snapshot?.documents.compactMap { try? $0.data(as: UserEventLog.self) }.first
+                    let log = snapshot?.documents.compactMap { try? $0.data(as: UserEventLog.self) }.first
                     completion(log)
                 }
             }
