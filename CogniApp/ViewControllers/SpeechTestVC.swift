@@ -12,19 +12,8 @@ class SpeechViewController: UIViewController {
     @IBOutlet var startButton: UIButton!
     @IBOutlet var stopButton: UIButton!
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-            super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-            // Your custom setup here
-    }
-    
-    required init?(coder: NSCoder) {
-            super.init(coder: coder)
-            // Or, if you don’t support storyboard initialization:
-            fatalError("init(coder:) has not been implemented")
-    }
-    
     //Domain Controller
-    
+    let recorder = VoiceRecorder();
     
     //UIElements
     
@@ -34,10 +23,18 @@ class SpeechViewController: UIViewController {
     }
    
     @IBAction func startPush(_ sender: Any) {
+        Task {
+            do {
+                try await recorder.startVoiceRecording()
+            } catch {
+                print("Error: ", error)
+            }
+        }
         
     }
     
     @IBAction func stopPush(_ sender: Any) {
+        recorder.stopVoiceRecording()
     }
     
 }

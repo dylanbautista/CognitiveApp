@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8D81147E2EEDDF77008B077E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8D81147D2EEDDF77008B077E /* FirebaseAuth */; };
-		8D8114802EEDDF77008B077E /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8D81147F2EEDDF77008B077E /* FirebaseCore */; };
-		8D8114822EEDDF77008B077E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8D8114812EEDDF77008B077E /* FirebaseFirestore */; };
+		8D8114872EEDF28C008B077E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8D81147D2EEDDF77008B077E /* FirebaseAuth */; };
+		8D8114882EEDF28C008B077E /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8D81147F2EEDDF77008B077E /* FirebaseCore */; };
+		8D8114892EEDF28C008B077E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8D8114812EEDDF77008B077E /* FirebaseFirestore */; };
+		8D8114F12EEDF33B008B077E /* AnyCodable in Frameworks */ = {isa = PBXBuildFile; productRef = 8D8114F02EEDF33B008B077E /* AnyCodable */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,10 +72,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB5394112EEDE96100C64457 /* AnyCodable in Frameworks */,
-				DB5392112EEDDBCB00C64457 /* FirebaseCore in Frameworks */,
-				DB53920F2EEDDBCB00C64457 /* FirebaseAuth in Frameworks */,
-				DB5392132EEDDBCB00C64457 /* FirebaseFirestore in Frameworks */,
+				8D8114F12EEDF33B008B077E /* AnyCodable in Frameworks */,
+				8D8114892EEDF28C008B077E /* FirebaseFirestore in Frameworks */,
+				8D8114882EEDF28C008B077E /* FirebaseCore in Frameworks */,
+				8D8114872EEDF28C008B077E /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +102,7 @@
 				8D31E6D12EECB098008C3C2C /* CogniApp */,
 				8D31E6E82EECB09D008C3C2C /* CogniAppTests */,
 				8D31E6F22EECB09D008C3C2C /* CogniAppUITests */,
-				DB53920D2EEDDBCB00C64457 /* Frameworks */,
+				8D8114EF2EEDF33B008B077E /* Frameworks */,
 				8D31E6D02EECB098008C3C2C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -116,7 +117,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8D81147C2EEDDF77008B077E /* Frameworks */ = {
+		8D8114EF2EEDF33B008B077E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -146,10 +147,7 @@
 				8D81147D2EEDDF77008B077E /* FirebaseAuth */,
 				8D81147F2EEDDF77008B077E /* FirebaseCore */,
 				8D8114812EEDDF77008B077E /* FirebaseFirestore */,
-				DB53920E2EEDDBCB00C64457 /* FirebaseAuth */,
-				DB5392102EEDDBCB00C64457 /* FirebaseCore */,
-				DB5392122EEDDBCB00C64457 /* FirebaseFirestore */,
-				DB5394102EEDE96100C64457 /* AnyCodable */,
+				8D8114F02EEDF33B008B077E /* AnyCodable */,
 			);
 			productName = CogniApp;
 			productReference = 8D31E6CF2EECB098008C3C2C /* CogniApp.app */;
@@ -631,6 +629,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DB5390782EEDA6E800C64457 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		8D8114F02EEDF33B008B077E /* AnyCodable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DB53940F2EEDE96100C64457 /* XCRemoteSwiftPackageReference "AnyCodable" */;
+			productName = AnyCodable;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
