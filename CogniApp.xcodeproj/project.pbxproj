@@ -10,6 +10,7 @@
 		DB53920F2EEDDBCB00C64457 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DB53920E2EEDDBCB00C64457 /* FirebaseAuth */; };
 		DB5392112EEDDBCB00C64457 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = DB5392102EEDDBCB00C64457 /* FirebaseCore */; };
 		DB5392132EEDDBCB00C64457 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DB5392122EEDDBCB00C64457 /* FirebaseFirestore */; };
+		DB5394112EEDE96100C64457 /* AnyCodable in Frameworks */ = {isa = PBXBuildFile; productRef = DB5394102EEDE96100C64457 /* AnyCodable */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB5394112EEDE96100C64457 /* AnyCodable in Frameworks */,
 				DB5392112EEDDBCB00C64457 /* FirebaseCore in Frameworks */,
 				DB53920F2EEDDBCB00C64457 /* FirebaseAuth in Frameworks */,
 				DB5392132EEDDBCB00C64457 /* FirebaseFirestore in Frameworks */,
@@ -145,6 +147,7 @@
 				DB53920E2EEDDBCB00C64457 /* FirebaseAuth */,
 				DB5392102EEDDBCB00C64457 /* FirebaseCore */,
 				DB5392122EEDDBCB00C64457 /* FirebaseFirestore */,
+				DB5394102EEDE96100C64457 /* AnyCodable */,
 			);
 			productName = CogniApp;
 			productReference = 8D31E6CF2EECB098008C3C2C /* CogniApp.app */;
@@ -230,6 +233,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				DB5390782EEDA6E800C64457 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				DB53940F2EEDE96100C64457 /* XCRemoteSwiftPackageReference "AnyCodable" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8D31E6D02EECB098008C3C2C /* Products */;
@@ -600,6 +604,14 @@
 				minimumVersion = 12.7.0;
 			};
 		};
+		DB53940F2EEDE96100C64457 /* XCRemoteSwiftPackageReference "AnyCodable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Flight-School/AnyCodable";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.7;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -617,6 +629,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DB5390782EEDA6E800C64457 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		DB5394102EEDE96100C64457 /* AnyCodable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DB53940F2EEDE96100C64457 /* XCRemoteSwiftPackageReference "AnyCodable" */;
+			productName = AnyCodable;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

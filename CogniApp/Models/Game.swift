@@ -1,5 +1,5 @@
 
-enum GameType: String, CaseIterable {
+enum GameType: String, Codable,CaseIterable {
     case fluency
     case attention
     case workingMemory

@@ -6,10 +6,3 @@ struct UserEventOption: Identifiable, Codable {
     let domain: CognitiveDomain
 }
 
-enum CognitiveDomain: String, Codable {
-    case attention
-    case speedProcessing
-    case verbalFluency
-    case memory
-    case executiveFunctions
-}

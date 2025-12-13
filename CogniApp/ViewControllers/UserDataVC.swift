@@ -53,7 +53,9 @@ class UserDataViewController: UIViewController {
     }*/
     
     @IBAction func nextButton(_ sender: Any) {
-        domainController.signUp(name: name, surname1: surname1, surname2: surname2, username: username, email: mail, password: password, password2: password2)
+        do {
+            try domainController.signUp(name: name, surname1: surname1, surname2: surname2, username: username, email: mail, password: password, password2: password2)
+        } catch is Error {print("error")}
         
     }
     

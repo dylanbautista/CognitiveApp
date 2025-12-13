@@ -5,7 +5,7 @@ let userEventOptions: [UserEventOption] = [
     UserEventOption(
         id: "ue1",
         text: "He anat a un lloc de l’habitació i, quan hi he arribat, no he recordat què hi anava a fer",
-        domain: .atencion
+        domain: .attention
     ),
     UserEventOption(
         id: "ue2",
