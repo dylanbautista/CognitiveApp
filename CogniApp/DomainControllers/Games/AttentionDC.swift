@@ -1,5 +1,5 @@
 //
-//  VelocityDC.swift
+//  FluencyDC.swift
 //  CogniApp
 //
 //  Created by Dylan Bautista on 13/12/25.
@@ -8,6 +8,6 @@
 import Foundation
 
 
-class VelocityDC : AnyObject {
+class AttentionDC : AnyObject {
     
 }

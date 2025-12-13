@@ -7,19 +7,13 @@
 
 import UIKit
 
-class FluencyVC: UIViewController {
+class ViewController: UIViewController {
     
-    let fluencyDC : FluencyDC;
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-
-    @IBAction func pushHistorialButton(_ sender: Any) {
-        print("Hello");
-    }
     
     
 }
-

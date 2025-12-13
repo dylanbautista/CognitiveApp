@@ -8,6 +8,6 @@
 import Foundation
 
 
-class FleuncyDC : AnyObject {
+class FluencyDC : AnyObject {
     
 }
