@@ -82,8 +82,9 @@ final class VoiceRecorder {
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: 0)
         recognitionRequest?.endAudio()
-        recognitionTask?.cancel()
-        recognitionTask = nil
+        //recognitionTask?.cancel()
+        //recognitionTask = nil
+        print("He parat guarres")
     }
 
     // MARK: - Get Results
