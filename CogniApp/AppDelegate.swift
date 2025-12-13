@@ -15,8 +15,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        FirebaseApp.configure()
-        // Override point for customization after application launch.
+        
+        // Intenta encontrar la ruta del archivo explícitamente.
+        if let plistPath = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+           let firebaseOptions = FirebaseOptions(contentsOfFile: plistPath) {
+            
+            FirebaseApp.configure(options: firebaseOptions)
+            print("✅ Firebase configurado exitosamente.")
+            
+        } else {
+            // Si entra aquí, significa que la app NO PUDO encontrar el archivo.
+            print("❌ ERROR CRÍTICO: GoogleService-Info.plist NO ENCONTRADO en el Bundle.")
+        }
+        
         return true
     }
 
