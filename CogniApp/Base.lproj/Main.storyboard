@@ -194,10 +194,10 @@
             </objects>
             <point key="canvasLocation" x="-509" y="-36"/>
         </scene>
-        <!--View Controller-->
+        <!--Speech View Controller-->
         <scene sceneID="Tds-8Z-mHi">
             <objects>
-                <viewController storyboardIdentifier="UserDataVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8Tn-kL-C3o" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UserDataVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8Tn-kL-C3o" customClass="SpeechViewController" customModule="CogniApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="STv-Rp-bkN">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -210,22 +210,32 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPV-tk-82q">
-                                <rect key="frame" x="131" y="225" width="152" height="35"/>
+                                <rect key="frame" x="131" y="271" width="152" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Start"/>
+                                <connections>
+                                    <action selector="startPush:" destination="8Tn-kL-C3o" eventType="touchUpInside" id="JQb-yo-yEm"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cAW-P3-USX">
-                                <rect key="frame" x="131" y="413" width="152" height="35"/>
+                                <rect key="frame" x="131" y="503" width="152" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Stop"/>
+                                <connections>
+                                    <action selector="stopPush:" destination="8Tn-kL-C3o" eventType="touchUpInside" id="g6a-Rb-kK3"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jyK-MP-haa"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="pyp-CN-KJ9"/>
+                    <connections>
+                        <outlet property="startButton" destination="YPV-tk-82q" id="FUw-WY-iCb"/>
+                        <outlet property="stopButton" destination="cAW-P3-USX" id="u9d-rV-Vpl"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cQw-YO-nIN" sceneMemberID="firstResponder"/>
             </objects>

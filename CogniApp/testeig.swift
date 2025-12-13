@@ -9,7 +9,7 @@ final class VoiceRecorder {
     private var sessionResults: [String] = []
     private let transcriber: SpeechTranscriber
 
-    init() async throws {
+    init() throws {
         let locale = Locale(identifier: "ca")
         transcriber = SpeechTranscriber(locale: locale, preset: .offlineTranscription)
         try await transcriber.setUpTranscriber()

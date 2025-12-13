@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FluencyVC: UIViewController {
+class FluencyVC: AnyObject {
     
     var fluencyDC : FluencyDomainController;
     
