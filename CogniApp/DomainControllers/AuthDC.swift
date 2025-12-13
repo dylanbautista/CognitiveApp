@@ -16,7 +16,22 @@ class AuthDomainController {
         if (password != password2) { throw AuthError.DifferentPasswordsError }
         
         // Backend logic to be added
-        userService.signUp(email: <#T##String#>, password: <#T##String#>, name: <#T##String#>, surname: String, surname2: String, completion: <#T##(Result<User, any Error>) -> Void#>)
+        userService.signUp(
+            email: email,
+            password: password,
+            name: name,
+            surname: surname1,
+            surname2: surname2,
+        ) { result in
+            switch result {
+            case .success(let user):
+                print("Usuario creado: \(user.name) \(user.surname)")
+                // Aquí puedes navegar a la pantalla principal de la app
+            case .failure(let error):
+                print("Error al crear usuario: \(error.localizedDescription)")
+                // Aquí puedes mostrar un alert al usuario
+            }
+        }
         
     }
     

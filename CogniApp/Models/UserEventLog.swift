@@ -1,7 +1,7 @@
 import Foundation
 
-struct UserEventLog: Identifiable, Codable {
+struct UserEventLog: Codable {
     let userId: String
     let optionId: String
-    let date: Date
+    var date: Date
 }

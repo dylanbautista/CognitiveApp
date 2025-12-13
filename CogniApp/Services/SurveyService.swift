@@ -16,7 +16,6 @@ class SurveyService {
                     completion(nil)
                 } else {
                     let log = snapshot?.documents.compactMap { try? $0.data(as: UserEventLog.self) }.first
-                    let log = snapshot?.documents.compactMap { try? $0.data(as: UserEventLog.self) }.first
                     completion(log)
                 }
             }
@@ -37,7 +36,7 @@ class SurveyService {
             }
 
             if let doc = snapshot?.documents.first {
-                db.collection(self.collectionName).document(doc.documentID).setData([
+                self.db.collection(self.collectionName).document(doc.documentID).setData([
                     "userId": logToSave.userId,
                     "optionId": logToSave.optionId,
                     "date": logToSave.date
@@ -53,6 +52,7 @@ class SurveyService {
                     completion(.failure(error))
                 }
             }
+
         }
     }
 

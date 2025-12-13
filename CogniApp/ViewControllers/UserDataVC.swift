@@ -8,16 +8,7 @@
 import UIKit
 
 class UserDataViewController: UIViewController {
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-            super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-            // Your custom setup here
-    }
     
-    required init?(coder: NSCoder) {
-            super.init(coder: coder)
-            // Or, if you don’t support storyboard initialization:
-            fatalError("init(coder:) has not been implemented")
-    }
     
     //Domain Controller
     let domainController = AuthDomainController()
@@ -35,13 +26,13 @@ class UserDataViewController: UIViewController {
     
     
     // SingUpValues
-    let name : String;
-    let surname1 : String;
-    let surname2 : String;
-    let username : String;
-    let mail : String;
-    let password : String;
-    let password2 : String;
+    var name : String = "";
+    var surname1 : String = "";
+    var surname2 : String = "";
+    var username : String = "";
+    var mail : String = "";
+    var password : String = "";
+    var password2 : String = "";
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +44,10 @@ class UserDataViewController: UIViewController {
     }*/
     
     @IBAction func nextButton(_ sender: Any) {
-        domainController.signUp(name: name, surname1: surname1, surname2: surname2, username: username, email: mail, password: password, password2: password2)
+        do {
+            try domainController.signUp(name: nameTF.text!, surname1: surnamesTF.text!, surname2: surnamesTF.text!, username: usernameTF.text!, email: emailTF.text!, password: passwordTF.text!, password2: password2TF.text!)
+            print(nameTF.text!);
+        } catch {print("error")}
         
     }
     
