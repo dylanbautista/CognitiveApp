@@ -1,5 +1,4 @@
 import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 class SurveyService {
     private let db = Firestore.firestore()
@@ -16,13 +15,13 @@ class SurveyService {
                 if let _ = error {
                     completion(nil)
                 } else {
-                    let log = snapshot?.documents.compactMap { try? $0.data(as: DailyUserEventLog.self) }.first
+                    let log = snapshot?.documents.compactMap { try? $0.data(as: UserEventLog.self) }.first
                     completion(log)
                 }
             }
     }
 
-    // Guardar o actualizar log con las respuestas del usuario
+    // Guardar o actualizar log del usuario
     func saveOrUpdate(_ log: UserEventLog, completion: @escaping (Result<Void, Error>) -> Void) {
         var logToSave = log
         logToSave.date = Calendar.current.startOfDay(for: log.date)
@@ -38,7 +37,9 @@ class SurveyService {
 
             if let doc = snapshot?.documents.first {
                 db.collection(self.collectionName).document(doc.documentID).setData([
-                    "eventStatuses": logToSave.eventStatuses
+                    "userId": logToSave.userId,
+                    "optionId": logToSave.optionId,
+                    "date": logToSave.date
                 ], merge: true) { err in
                     if let err = err { completion(.failure(err)) } else { completion(.success(())) }
                 }
@@ -54,11 +55,12 @@ class SurveyService {
         }
     }
 
+    // Obtener logs de los últimos 7 días
     func fetchLastSevenDaysLogs(for userId: String, completion: @escaping ([UserEventLog]) -> Void) {
         let today = Calendar.current.startOfDay(for: Date())
         let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -6, to: today)!
 
-        db.collection("UserEventLogs")
+        db.collection(collectionName)
             .whereField("userId", isEqualTo: userId)
             .whereField("date", isGreaterThanOrEqualTo: sevenDaysAgo)
             .whereField("date", isLessThanOrEqualTo: today)
@@ -73,5 +75,4 @@ class SurveyService {
                 completion(logs)
             }
     }
-
 }

@@ -9,14 +9,14 @@ import Foundation
 
 class AuthDomainController {
     
-    //let userService = UserService();
+    let userService = UserService();
     
     func signUp(name : String, surname1 : String, surname2 : String, username: String, email : String, password: String, password2: String) throws {
         
         if (password != password2) { throw AuthError.DifferentPasswordsError }
         
         // Backend logic to be added
-        //userService.signUp
+        userService.signUp(email: <#T##String#>, password: <#T##String#>, name: <#T##String#>, surname: String, surname2: String, completion: <#T##(Result<User, any Error>) -> Void#>)
         
     }
     
