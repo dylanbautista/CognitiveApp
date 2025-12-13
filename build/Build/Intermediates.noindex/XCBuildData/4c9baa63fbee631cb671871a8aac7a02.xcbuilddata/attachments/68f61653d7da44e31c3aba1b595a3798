@@ -1,0 +1,48 @@
+{
+  "" : {
+    "diagnostics" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/CogniApp-master.dia",
+    "emit-module-dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/CogniApp-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/CogniApp-master-emit-module.dia",
+    "swift-dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/CogniApp-master.swiftdeps"
+  },
+  "/Users/dylanbautista/Hack/CogniApp/CogniApp/AppDelegate.swift" : {
+    "const-values" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/AppDelegate.swiftconstvalues",
+    "dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/AppDelegate.d",
+    "diagnostics" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/AppDelegate.dia",
+    "index-unit-output-path" : "/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/AppDelegate.o",
+    "llvm-bc" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/AppDelegate.bc",
+    "object" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/AppDelegate.o",
+    "swift-dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/AppDelegate.swiftdeps",
+    "swiftmodule" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/AppDelegate~partial.swiftmodule"
+  },
+  "/Users/dylanbautista/Hack/CogniApp/CogniApp/SceneDelegate.swift" : {
+    "const-values" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/SceneDelegate.swiftconstvalues",
+    "dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/SceneDelegate.d",
+    "diagnostics" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/SceneDelegate.dia",
+    "index-unit-output-path" : "/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/SceneDelegate.o",
+    "llvm-bc" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/SceneDelegate.bc",
+    "object" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/SceneDelegate.o",
+    "swift-dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/SceneDelegate.swiftdeps",
+    "swiftmodule" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/SceneDelegate~partial.swiftmodule"
+  },
+  "/Users/dylanbautista/Hack/CogniApp/CogniApp/ViewController.swift" : {
+    "const-values" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/ViewController.swiftconstvalues",
+    "dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/ViewController.d",
+    "diagnostics" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/ViewController.dia",
+    "index-unit-output-path" : "/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/ViewController.o",
+    "llvm-bc" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/ViewController.bc",
+    "object" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/ViewController.o",
+    "swift-dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/ViewController.swiftdeps",
+    "swiftmodule" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/ViewController~partial.swiftmodule"
+  },
+  "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/dylanbautista/Hack/CogniApp/build/Build/Intermediates.noindex/CogniApp.build/Debug-iphoneos/CogniApp.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}
