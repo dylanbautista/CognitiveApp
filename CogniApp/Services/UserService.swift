@@ -8,17 +8,31 @@ class UserService {
 
 
     func signUp(email: String, password: String, name: String, surname: String, surname2: String?, completion: @escaping (Result<User, Error>) -> Void) {
+        
+        // 1. ELIMINADA LA LLAMADA DUPLICADA. Solo queda esta:
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            
             if let error = error {
+                // Manejo de error explícito para depuración
+                let nsError = error as NSError
+                print("--------------------------------------------------")
+                print("❌ ERROR al crear usuario (CÓDIGO \(nsError.code)):")
+                print("Mensaje: \(error.localizedDescription)")
+                print("Dominio: \(nsError.domain)")
+                print("--------------------------------------------------")
+                
                 completion(.failure(error))
+                return // Salir del closure si hay error
+                
             } else if let firebaseUser = result?.user {
-                // Crear tu struct User
+                // 2. Éxito en la creación del usuario en Auth
+                
                 let user = User(
                     id: firebaseUser.uid,
                     name: name,
                     surname: surname,
                     surname2: surname2,
-                    email: email,
+                    email: email
                 )
                 
                 // Guardar en Firestore
@@ -32,9 +46,11 @@ class UserService {
                 
                 self.db.collection("users").document(user.id).setData(userData) { dbError in
                     if let dbError = dbError {
+                        print("❌ ERROR al guardar datos en Firestore: \(dbError.localizedDescription)")
                         completion(.failure(dbError))
                     } else {
-                        completion(.success(user)) // Devolver tu User, no firebaseUser
+                        print("🎉 Usuario \(user.id) creado y guardado en Firestore con éxito.")
+                        completion(.success(user))
                     }
                 }
             }
