@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum AttentionError : Error {
+enum MemoryError : Error {
     
 }

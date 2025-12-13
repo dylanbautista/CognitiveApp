@@ -7,8 +7,7 @@
 
 import UIKit
 
-class AttentionVC: UIViewController {
-    
+class InfoStartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()

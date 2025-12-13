@@ -8,6 +8,6 @@
 import Foundation
 
 
-class FluencyDC : AnyObject {
+class FluencyDomainController {
     
 }

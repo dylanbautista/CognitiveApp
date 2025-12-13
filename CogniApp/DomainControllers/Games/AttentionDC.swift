@@ -8,6 +8,6 @@
 import Foundation
 
 
-class AttentionDC : AnyObject {
+class AttentionDomainController {
     
 }

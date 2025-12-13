@@ -10,4 +10,5 @@ import Foundation
 enum AuthError : Error {
     case DifferentPasswordsError
     
+    case LogInWrongPasswordError
 }

@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum FluencyError : Error {
+enum VelocityError : Error {
     
 }

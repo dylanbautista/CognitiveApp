@@ -8,6 +8,6 @@
 import Foundation
 
 
-class VelocityDC : AnyObject {
+class VelocityDomainController {
     
 }

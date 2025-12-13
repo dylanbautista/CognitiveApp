@@ -8,6 +8,6 @@
 import Foundation
 
 
-class MemoryDC : AnyObject {
+class MemoryDomainController {
     
 }
