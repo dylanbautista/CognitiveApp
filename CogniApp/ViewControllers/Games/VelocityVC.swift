@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import Foundation
 
 class VelocityVC: UIViewController {
+
+    let userService = UserService()
+    let gameService = GameService()
+    let gameResult = GameResult()
 
     @IBOutlet var buttons: [UIButton] = []
 
@@ -50,7 +55,7 @@ class VelocityVC: UIViewController {
                 finishGame()
             }
         } else {
-            // Error → sumar 2 segons
+            // Error: sumar 2 segons
             //elapsedTime += 2
             //updateTimeLabel()
             numErrors += 1
@@ -69,6 +74,13 @@ class VelocityVC: UIViewController {
     }
 
     func finishGame() {
+
+        // He de crear una struct de GameService 
+        // Per cridar la funcio saveGameResult amb els paràmetres corresponents
+        let user = gameService.getCurrentUser()
+        gameResult(userId: user.id, gameType: .velocity, date: Date(), additionalData: ["time": AnyCodable(elapsedTime), "errors": AnyCodable(numErrors)])
+
+        saveGameResult(gameResult)
         timer?.invalidate()
         timer = nil
 
