@@ -74,23 +74,58 @@ class VelocityVC: UIViewController {
     }
 
     func finishGame() {
-
-        // He de crear una struct de GameService 
-        // Per cridar la funcio saveGameResult amb els paràmetres corresponents
-        let user = gameService.getCurrentUser()
-        gameResult(userId: user.id, gameType: .velocity, date: Date(), additionalData: ["time": AnyCodable(elapsedTime), "errors": AnyCodable(numErrors)])
-
-        saveGameResult(gameResult)
-        timer?.invalidate()
+        
+        // 1. Detener el temporizador inmediatamente
+        timer?.invalidate() 
         timer = nil
 
-        let alert = UIAlertController(
-            title: "Has acabat!",
-            message: String(format: "Temps final: %.1f segons. Amb %d errors!", elapsedTime, numErrors),
-            preferredStyle: .alert
-        )
+        // Guardamos las variables locales antes de llamar a la función asíncrona
+        let finalTime = self.elapsedTime
+        let finalErrors = self.numErrors
+        
+        // 2. OBTENER EL USUARIO ASÍNCRONAMENTE
+        userService.fetchCurrentUser { [weak self] result in
+            
+            guard let self = self else { return }
+            
+            // 3. Intentar guardar el resultado solo si hay un usuario logueado
+            if case .success(let user) = result {
+                
+                // Crear el objeto GameResult con el ID del usuario
+                let resultToSave = GameResult(
+                    userId: user.id,
+                    gameType: .processingSpeed, // Usamos .processingSpeed como ejemplo del enum
+                    date: Date(),
+                    additionalData: [
+                        "time": AnyCodable(finalTime),
+                        "errors": AnyCodable(finalErrors)
+                    ]
+                )
+                
+                // Llamar a la función de guardado (asíncrona)
+                self.gameService.saveGameResult(resultToSave) { saveResult in
+                    if case .failure(let error) = saveResult {
+                        print("❌ Error al guardar el resultado: \(error.localizedDescription)")
+                    } else {
+                        print("✅ Resultado de juego guardado con éxito.")
+                    }
+                }
+            } else {
+                print("🛑 No se pudo obtener el usuario. Resultado no guardado.")
+            }
+            
+            // 4. Mostrar la alerta de fin de juego (siempre)
+            // Aseguramos que la UI se actualice en el hilo principal
+            DispatchQueue.main.async {
+                let alert = UIAlertController(
+                    title: "Has acabat!",
+                    message: String(format: "Temps final: %.1f segons. Amb %d errors!", finalTime, finalErrors),
+                    preferredStyle: .alert
+                )
 
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(alert, animated: true)
+            }
+        }
     }
 }

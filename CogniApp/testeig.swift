@@ -60,8 +60,11 @@ final class VoiceRecorder {
                     self.sessionResults.append(text)
                 }
                 print("Partial transcription:", text)
+                self.sessionResults.append(text)
             } else if let error = error {
                 print("Recognition error:", error)
+                
+
             }
         }
 
@@ -84,7 +87,8 @@ final class VoiceRecorder {
         recognitionRequest?.endAudio()
         //recognitionTask?.cancel()
         //recognitionTask = nil
-        print("He parat guarres")
+        print("He parat senyors")
+        print("Session Results:", self.sessionResults[self.sessionResults.count - 1])
     }
 
     // MARK: - Get Results

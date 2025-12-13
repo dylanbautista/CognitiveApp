@@ -95,7 +95,51 @@ class UserService {
         }
     }
 
+    // En UserService.swift
 
-    
+// NUEVA FUNCIÓN: Obtiene el usuario autenticado y sus datos de Firestore
+    func fetchCurrentUser(completion: @escaping (Result<User, Error>) -> Void) {
+        
+        // 1. Verificar si hay alguien logueado en Firebase Auth
+        guard let firebaseUser = Auth.auth().currentUser else {
+            let error = NSError(
+                domain: "UserService", 
+                code: 401, 
+                userInfo: [NSLocalizedDescriptionKey: "No hay un usuario autenticado"]
+            )
+            completion(.failure(error))
+            return
+        }
 
+        // 2. Usar el UID para obtener el documento completo de Firestore
+        self.db.collection("users").document(firebaseUser.uid).getDocument { snapshot, dbError in
+            
+            if let dbError = dbError {
+                completion(.failure(dbError))
+            } else if let data = snapshot?.data() {
+                
+                // 3. Mapear los datos de Firestore a tu struct User
+                let user = User(
+                    id: firebaseUser.uid,
+                    name: data["name"] as? String ?? "",
+                    surname: data["surname"] as? String ?? "",
+                    surname2: data["surname2"] as? String,
+                    email: data["email"] as? String ?? ""
+                )
+                completion(.success(user))
+                
+            } else {
+                // Usuario en Auth, pero no en Firestore
+                let error = NSError(
+                    domain: "UserService", 
+                    code: 404, 
+                    userInfo: [NSLocalizedDescriptionKey: "Datos de usuario no encontrados en Firestore"]
+                )
+                completion(.failure(error))
+            }
+        }
+    }
 }
+
+
+
