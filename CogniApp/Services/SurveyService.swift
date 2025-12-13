@@ -1,5 +1,4 @@
 import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 class SurveyService {
     private let db = Firestore.firestore()
@@ -16,7 +15,7 @@ class SurveyService {
                 if let _ = error {
                     completion(nil)
                 } else {
-                    let log = snapshot?.documents.compactMap { try? $0.data(as: DailyUserEventLog.self) }.first
+                    let log = snapshot?.documents.compactMap { try? $0.data(as: UserEventLog.self) }.first
                     completion(log)
                 }
             }
@@ -38,7 +37,7 @@ class SurveyService {
 
             if let doc = snapshot?.documents.first {
                 db.collection(self.collectionName).document(doc.documentID).setData([
-                    "eventStatuses": logToSave.eventStatuses
+                    
                 ], merge: true) { err in
                     if let err = err { completion(.failure(err)) } else { completion(.success(())) }
                 }
