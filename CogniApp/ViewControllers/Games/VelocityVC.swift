@@ -9,40 +9,29 @@ import UIKit
 
 class VelocityVC: UIViewController {
 
-    var buttons: [UIButton] = []
+    @IBOutlet var buttons: [UIButton] = []
 
     var numbers = Array(1...9).shuffled()
     var expectedNumber = 1
 
     var timer: Timer?
     var elapsedTime: TimeInterval = 0
+    var numErrors = 0;
 
-    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet var timeLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        numErrors = 0;
         setupButtons()
         updateTimeLabel()
     }
 
     func setupButtons() {
         for i in 0..<9 {
-            let button = UIButton(type: .system)
-            button.setTitle("\(numbers[i])", for: .normal)
-            button.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
-            button.tag = numbers[i]
-            button.addTarget(self, action: #selector(numberTapped(_:)), for: .touchUpInside)
-
-            buttons.append(button)
-            view.addSubview(button)
-
-            // Posicionament simple (exemple)
-            let row = i / 3
-            let col = i % 3
-            button.frame = CGRect(x: 60 + col * 80,
-                                y: 150 + row * 80,
-                                width: 60,
-                                height: 60)
+            buttons[i].setTitle("\(numbers[i])", for: .normal)
+            buttons[i].tag = numbers[i]
+            buttons[i].addTarget(self, action: #selector(numberTapped(_:)), for: .touchUpInside)
         }
     }
     
@@ -62,8 +51,9 @@ class VelocityVC: UIViewController {
             }
         } else {
             // Error → sumar 2 segons
-            elapsedTime += 2
-            updateTimeLabel()
+            //elapsedTime += 2
+            //updateTimeLabel()
+            numErrors += 1
         }
     }
 
@@ -84,7 +74,7 @@ class VelocityVC: UIViewController {
 
         let alert = UIAlertController(
             title: "Has acabat!",
-            message: String(format: "Temps final: %.1f segons", elapsedTime),
+            message: String(format: "Temps final: %.1f segons. Amb %d errors!", elapsedTime, numErrors),
             preferredStyle: .alert
         )
 

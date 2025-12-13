@@ -9,7 +9,7 @@ import Foundation
 
 class AttentionDomainController {
 
-    let ViewController : UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AttentionVC")
+    /*let ViewController : UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AttentionVC")*/
     
     var currentLength = 4
     let maxLength = 9
@@ -44,7 +44,7 @@ class AttentionDomainController {
 
         generateSequence()
 
-        ViewController.showSequence(sequence: currentSequence)
+        /*ViewController.showSequence(sequence: currentSequence)*/
         // Aquí el controlador extern mostrarà la seqüència
         // i després cridarà getUserResponse(...)
     }
@@ -58,8 +58,8 @@ class AttentionDomainController {
     func getUserResponse(userInput: [String]) {
         userSequence = userInput
 
-        let userNumbers = convertWordsToNumbers(userSequence)
-        checkAnswer(userNumbers: userNumbers)
+        /*let userNumbers = convertWordsToNumbers(userSequence)
+        checkAnswer(userNumbers: userNumbers)*/
     }
 
     func checkAnswer(userNumbers: [Int]) {

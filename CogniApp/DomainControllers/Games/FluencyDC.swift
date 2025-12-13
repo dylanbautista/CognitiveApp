@@ -23,7 +23,7 @@ class FluencyDomainController {
         guard let primeraLletra = paraula.lowercased().first else {
             return false
         }
-        return primera == Character(lletra.lowercased())
+        return /*primera == Character(lletra.lowercased())*/ true
     }
 
     func pertanyCategoria(paraula: String, categoria: String) -> Bool 
