@@ -105,13 +105,11 @@ class VelocityVC: UIViewController {
                 // Llamar a la función de guardado (asíncrona)
                 self.gameService.saveGameResult(resultToSave) { saveResult in
                     if case .failure(let error) = saveResult {
-                        print("❌ Error al guardar el resultado: \(error.localizedDescription)")
-                    } else {
-                        print("✅ Resultado de juego guardado con éxito.")
+                        print("Error al guardar el resultado: \(error.localizedDescription)")
                     }
                 }
             } else {
-                print("🛑 No se pudo obtener el usuario. Resultado no guardado.")
+                print("No se pudo obtener el usuario. Resultado no guardado.")
             }
             
             // 4. Mostrar la alerta de fin de juego (siempre)

@@ -31,5 +31,12 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func showGames(_ sender: UIButton) {
+        
+        print("Hello")
+        
+    }
+    
+    
 }
 

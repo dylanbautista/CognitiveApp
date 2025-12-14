@@ -8,6 +8,7 @@ final class VoiceRecorder {
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ca-ES"))!
     private var sessionResults: [String] = []
+    private var paraules: Bool
 
     // MARK: - Permissions
     func requestPermissions() async -> Bool {
@@ -29,67 +30,77 @@ final class VoiceRecorder {
     }
 
     // MARK: - Start Recording
-    func startVoiceRecording() async throws {
+    func startVoiceRecording() async throws
+    -> AsyncThrowingStream<String, Error> {
+
         guard await requestPermissions() else {
-            throw NSError(domain: "VoiceRecorder", code: 1,
-                          userInfo: [NSLocalizedDescriptionKey: "Permissions denied"])
+            throw NSError(
+                domain: "VoiceRecorder",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Permissions denied"]
+            )
         }
 
-        // Clear previous session results
-        sessionResults.removeAll()
+        return AsyncThrowingStream { continuation in
+            self.transcriptionContinuation = continuation
 
-        // Configure audio session
-        let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(.playAndRecord, mode: .spokenAudio)
-        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            continuation.onTermination = { [weak self] _ in
+                self?.recognitionTask?.cancel()
+                self?.recognitionTask = nil
+            }
 
-        // Prepare recognition request
-        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-        recognitionRequest?.shouldReportPartialResults = true
+            do {
+                sessionResults.removeAll()
 
-        // Cancel previous task if running
-        recognitionTask?.cancel()
-        recognitionTask = nil
+                let audioSession = AVAudioSession.sharedInstance()
+                try audioSession.setCategory(.playAndRecord, mode: .spokenAudio)
+                try audioSession.setActive(true)
 
-        // Start recognition task
-        recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest!) { [weak self] result, error in
-            guard let self = self else { return }
-            if let result = result {
-                let text = result.bestTranscription.formattedString
-                if result.isFinal {
-                    self.sessionResults.append(text)
+                recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+                recognitionRequest?.shouldReportPartialResults = true
+
+                recognitionTask = speechRecognizer.recognitionTask(
+                    with: recognitionRequest!
+                ) { [weak self] result, error in
+                    guard let self = self else { return }
+
+                    if let error = error {
+                        continuation.finish(throwing: error)
+                        return
+                    }
+
+                    guard let result = result else { return }
+
+                    let text = result.bestTranscription.formattedString
+                    continuation.yield(text)
+
+                    if result.isFinal {
+                        self.sessionResults.append(text)
+                    }
                 }
-                print("Partial transcription:", text)
-                self.sessionResults.append(text)
-            } else if let error = error {
-                print("Recognition error:", error)
-                
 
+            } catch {
+                continuation.finish(throwing: error)
             }
         }
-
-        // Configure audio engine
-        let inputNode = audioEngine.inputNode
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
-        inputNode.removeTap(onBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 4096, format: recordingFormat) { buffer, _ in
-            self.recognitionRequest?.append(buffer)
-        }
-
-        audioEngine.prepare()
-        try audioEngine.start()
     }
+
 
     // MARK: - Stop Recording
     func stopVoiceRecording() {
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: 0)
         recognitionRequest?.endAudio()
-        //recognitionTask?.cancel()
-        //recognitionTask = nil
+
+        recognitionTask?.cancel()
+        recognitionTask = nil
+
+        transcriptionContinuation?.finish()
+        transcriptionContinuation = nil
+
         print("He parat senyors")
-        print("Session Results:", self.sessionResults[self.sessionResults.count - 1])
     }
+
 
     // MARK: - Get Results
     func getSessionResults() -> [String] {
