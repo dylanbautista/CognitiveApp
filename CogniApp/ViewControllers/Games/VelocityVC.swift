@@ -7,12 +7,12 @@
 
 import UIKit
 import Foundation
+import AnyCodable
 
 class VelocityVC: UIViewController {
 
     let userService = UserService()
     let gameService = GameService()
-    let gameResult = GameResult()
 
     @IBOutlet var buttons: [UIButton] = []
 
