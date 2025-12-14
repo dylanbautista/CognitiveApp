@@ -51,6 +51,13 @@ class UserDataViewController: UIViewController {
         
     }
     
+    @IBAction func goBack(_ sender: UIButton) {
+        self.dismiss(animated: true)
+    }
+    
+    
+    
+    
     
 }
 

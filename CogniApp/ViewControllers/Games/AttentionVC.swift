@@ -27,6 +27,10 @@ class AttentionVC: UIViewController {
     private var sequenceTimer: Timer?
     private var elapsedTime: TimeInterval = 0
 
+    private var spokenWords: [String] = []
+    private var listeningTask: Task<Void, Never>?
+
+
     // Estadístiques
     private var numErrors = 0
 
@@ -85,24 +89,61 @@ class AttentionVC: UIViewController {
 
     // MARK: - Veu
     private func startListening() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let spokenWords = self.voiceRecorder.startVoiceRecording(false)
-            let spokenNumbers = self.convertStringsToInts(spokenWords)
+        spokenWords = []
 
-            DispatchQueue.main.async {
-                self.sequenceTimer?.invalidate()
-                self.checkAnswer(userNumbers: spokenNumbers)
+        listeningTask = Task {
+            do {
+                let stream = try await voiceRecorder.startVoiceRecording()
+
+                for try await transcription in stream {
+                    print(transcription) // debug
+
+                    spokenWords.append(transcription)
+
+                    // Si volem aturar manualment
+                    if transcription.lowercased().contains("stop listening") {
+                        voiceRecorder.stopVoiceRecording()
+                        break
+                    }
+                }
+
+                await MainActor.run {
+                    self.sequenceTimer?.invalidate()
+                    let numbers = self.convertWordsToNumbers(self.spokenWords)
+                    self.checkAnswer(userNumbers: numbers)
+                }
+
+            } catch {
+                print("Error voice recorder: \(error)")
             }
         }
     }
 
+
+    let stream = try await recorder.startVoiceRecording()
+
+    for try await transcription in stream {
+        print(transcription)
+
+        if transcription.contains("stop listening") {
+            recorder.stopVoiceRecording()
+            break
+        }
+    }
+
+
     // MARK: - Temporitzador
     private func startSequenceTimer() {
         sequenceTimer?.invalidate()
+        elapsedTime = 0
+
         sequenceTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
             self.elapsedTime += 0.1
+
             if self.elapsedTime >= self.maxTimePerSequence {
                 self.sequenceTimer?.invalidate()
+                self.voiceRecorder.stopVoiceRecording()
+                self.listeningTask?.cancel()
                 self.numErrors += 1
                 self.nextRound()
             }
@@ -137,7 +178,9 @@ class AttentionVC: UIViewController {
     }
 
     // MARK: - Utils
-    private func convertStringsToInts(_ strings: [String]) -> [Int] {
-        strings.compactMap { Int($0) }
+        private func convertWordsToNumbers(_ words: [String]) -> [Int] {
+        return words.compactMap { word in
+            Int(word.trimmingCharacters(in: .whitespacesAndNewlines))
+        }
     }
 }
