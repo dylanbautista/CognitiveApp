@@ -7,7 +7,8 @@ class RecommendationViewController: UIViewController {
     
     // Servicios (Ajusta esto según donde obtengas el ID del usuario)
     private let surveyService = SurveyService()
-    private let currentUserId: String = "ID_USUARIO_ACTUAL" 
+
+    var currentUserId: String?
 
     // MARK: - Componentes de la UI
     private let titleLabel = UILabel()
@@ -19,6 +20,12 @@ class RecommendationViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("ERROR: Usuario no logueado.")
+            // Redirigir a pantalla de login
+            return
+        }
+        self.currentUserId = userId
         view.backgroundColor = .systemBackground
         setupUI()
         
