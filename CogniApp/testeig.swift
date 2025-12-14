@@ -8,7 +8,8 @@ final class VoiceRecorder {
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ca-ES"))!
     private var sessionResults: [String] = []
-    private var paraules: Bool
+    private var paraules: Bool = false
+    private var transcriptionContinuation: AsyncThrowingStream<String, Error>.Continuation?
 
     // MARK: - Permissions
     func requestPermissions() async -> Bool {

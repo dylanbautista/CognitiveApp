@@ -5,14 +5,8 @@ class AttentionVC: UIViewController {
     // MARK: - Voice Recorder
     let voiceRecorder = VoiceRecorder()
 
-    // MARK: - UI
-    private let sequenceLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 44, weight: .bold)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
+    
+    @IBOutlet var sequenceLabel: UILabel!
 
     // MARK: - Joc
     private var currentLength = 4
@@ -43,9 +37,9 @@ class AttentionVC: UIViewController {
     }
 
     private func setupLabel() {
-        sequenceLabel.frame = view.bounds
-        sequenceLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(sequenceLabel)
+        sequenceLabel.font = .systemFont(ofSize: 44, weight: .bold)
+        sequenceLabel.textAlignment = .center
+        sequenceLabel.numberOfLines = 0
     }
 
     // MARK: - Joc
