@@ -3,7 +3,7 @@ import UIKit
 class AttentionVC: UIViewController {
 
     // MARK: - Voice Recorder
-    let voiceRecorder = VoiceRecorder()
+    let recorder = VoiceRecorder()
 
     
     @IBOutlet var sequenceLabel: UILabel!
@@ -71,9 +71,9 @@ class AttentionVC: UIViewController {
     }
 
     private func generateSequence() {
-        currentSequence = (0..<currentLength).map {
-            Int.random(in: 0...9)
-        }
+        currentSequence = (0..<currentLength).map { _ in
+                Int.random(in: 0...9)
+            }
     }
 
     private func showSequence() {
@@ -87,7 +87,7 @@ class AttentionVC: UIViewController {
 
         listeningTask = Task {
             do {
-                let stream = try await voiceRecorder.startVoiceRecording()
+                let stream = try await recorder.startVoiceRecording()
 
                 for try await transcription in stream {
                     print(transcription) // debug
@@ -114,9 +114,7 @@ class AttentionVC: UIViewController {
     }
 
 
-    let stream = try await recorder.startVoiceRecording()
-
-    for try await transcription in stream {
+    for try await transcription in recorder.startVoiceRecording() {
         print(transcription)
 
         if transcription.contains("stop listening") {
@@ -136,7 +134,7 @@ class AttentionVC: UIViewController {
 
             if self.elapsedTime >= self.maxTimePerSequence {
                 self.sequenceTimer?.invalidate()
-                self.voiceRecorder.stopVoiceRecording()
+                self.recorder.stopVoiceRecording()
                 self.listeningTask?.cancel()
                 self.numErrors += 1
                 self.nextRound()
@@ -177,4 +175,6 @@ class AttentionVC: UIViewController {
             Int(word.trimmingCharacters(in: .whitespacesAndNewlines))
         }
     }
+    
+    
 }
