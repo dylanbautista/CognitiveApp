@@ -1,5 +1,4 @@
-
-import Foundation
+// Este es el array que ya tenías, asegurando que usa el enum correcto:
 
 let userEventOptions: [UserEventOption] = [
     UserEventOption(
