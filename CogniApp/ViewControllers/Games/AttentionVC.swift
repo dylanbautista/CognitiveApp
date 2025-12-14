@@ -96,7 +96,7 @@ class AttentionVC: UIViewController {
 
                     // Si volem aturar manualment
                     if transcription.lowercased().contains("stop listening") {
-                        voiceRecorder.stopVoiceRecording()
+                        //voiceRecorder.stopVoiceRecording()
                         break
                     }
                 }
@@ -114,14 +114,14 @@ class AttentionVC: UIViewController {
     }
 
 
-    for try await transcription in recorder.startVoiceRecording() {
+    /*for try await transcription in recorder.startVoiceRecording() {
         print(transcription)
 
         if transcription.contains("stop listening") {
             recorder.stopVoiceRecording()
             break
         }
-    }
+    }*/
 
 
     // MARK: - Temporitzador
