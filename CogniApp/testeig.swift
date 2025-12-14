@@ -54,7 +54,7 @@ final class VoiceRecorder {
     }
 
     // MARK: - Start Recording
-    func startVoiceRecording() async throws {
+    func startVoiceRecording(paraules: Bool?) async throws {
         guard await requestPermissions() else {
             throw NSError(domain: "VoiceRecorder", code: 1,
                           userInfo: [NSLocalizedDescriptionKey: "Permissions denied"])
@@ -114,7 +114,7 @@ final class VoiceRecorder {
     func getSessionResults() -> [String] {
         var result: [String] = []
 
-        for raw in inputs {
+        for raw in self.sessionResults[self.sessionResults.count - 1] {
             let token = raw.lowercased()
 
             if let digit = numberWords[token] {
@@ -132,11 +132,11 @@ final class VoiceRecorder {
                 result.append(contentsOf: digits.map { String($0) })
             }
         }
-        if self.sessionResults.count < 5 {
-            return self.sessionResults
+        if result.count < 5 {
+            return result
         }
         else {
-            return Array(self.sessionResults.suffix(5))
+            return Array(result.suffix(5))
         }
     }
 }
