@@ -13,7 +13,7 @@ class SpeechViewController: UIViewController {
     @IBOutlet var stopButton: UIButton!
     
     //Domain Controller
-    let recorder = VoiceRecorder();
+    //let recorder = VoiceRecorder();
     
     //UIElements
     
@@ -23,18 +23,18 @@ class SpeechViewController: UIViewController {
     }
    
     @IBAction func startPush(_ sender: Any) {
-        Task {
+        /*Task {
             do {
                 try await recorder.startVoiceRecording()
             } catch {
                 print("Error: ", error)
             }
-        }
+        }*/
         
     }
     
     @IBAction func stopPush(_ sender: Any) {
-        recorder.stopVoiceRecording()
+        //recorder.stopVoiceRecording()
     }
     
 }
