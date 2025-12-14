@@ -6,43 +6,37 @@
 //
 
 import UIKit
+import Foundation
+import AnyCodable
 
 class VelocityVC: UIViewController {
 
-    var buttons: [UIButton] = []
+    let userService = UserService()
+    let gameService = GameService()
+
+    @IBOutlet var buttons: [UIButton] = []
 
     var numbers = Array(1...9).shuffled()
     var expectedNumber = 1
 
     var timer: Timer?
     var elapsedTime: TimeInterval = 0
+    var numErrors = 0;
 
-    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet var timeLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        numErrors = 0;
         setupButtons()
         updateTimeLabel()
     }
 
     func setupButtons() {
         for i in 0..<9 {
-            let button = UIButton(type: .system)
-            button.setTitle("\(numbers[i])", for: .normal)
-            button.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
-            button.tag = numbers[i]
-            button.addTarget(self, action: #selector(numberTapped(_:)), for: .touchUpInside)
-
-            buttons.append(button)
-            view.addSubview(button)
-
-            // Posicionament simple (exemple)
-            let row = i / 3
-            let col = i % 3
-            button.frame = CGRect(x: 60 + col * 80,
-                                y: 150 + row * 80,
-                                width: 60,
-                                height: 60)
+            buttons[i].setTitle("\(numbers[i])", for: .normal)
+            buttons[i].tag = numbers[i]
+            buttons[i].addTarget(self, action: #selector(numberTapped(_:)), for: .touchUpInside)
         }
     }
     
@@ -61,9 +55,10 @@ class VelocityVC: UIViewController {
                 finishGame()
             }
         } else {
-            // Error → sumar 2 segons
-            elapsedTime += 2
-            updateTimeLabel()
+            // Error: sumar 2 segons
+            //elapsedTime += 2
+            //updateTimeLabel()
+            numErrors += 1
         }
     }
 
@@ -79,16 +74,58 @@ class VelocityVC: UIViewController {
     }
 
     func finishGame() {
-        timer?.invalidate()
+        
+        // 1. Detener el temporizador inmediatamente
+        timer?.invalidate() 
         timer = nil
 
-        let alert = UIAlertController(
-            title: "Has acabat!",
-            message: String(format: "Temps final: %.1f segons", elapsedTime),
-            preferredStyle: .alert
-        )
+        // Guardamos las variables locales antes de llamar a la función asíncrona
+        let finalTime = self.elapsedTime
+        let finalErrors = self.numErrors
+        
+        // 2. OBTENER EL USUARIO ASÍNCRONAMENTE
+        userService.fetchCurrentUser { [weak self] result in
+            
+            guard let self = self else { return }
+            
+            // 3. Intentar guardar el resultado solo si hay un usuario logueado
+            if case .success(let user) = result {
+                
+                // Crear el objeto GameResult con el ID del usuario
+                let resultToSave = GameResult(
+                    userId: user.id,
+                    gameType: .processingSpeed, // Usamos .processingSpeed como ejemplo del enum
+                    date: Date(),
+                    additionalData: [
+                        "time": AnyCodable(finalTime),
+                        "errors": AnyCodable(finalErrors)
+                    ]
+                )
+                
+                // Llamar a la función de guardado (asíncrona)
+                self.gameService.saveGameResult(resultToSave) { saveResult in
+                    if case .failure(let error) = saveResult {
+                        print("❌ Error al guardar el resultado: \(error.localizedDescription)")
+                    } else {
+                        print("✅ Resultado de juego guardado con éxito.")
+                    }
+                }
+            } else {
+                print("🛑 No se pudo obtener el usuario. Resultado no guardado.")
+            }
+            
+            // 4. Mostrar la alerta de fin de juego (siempre)
+            // Aseguramos que la UI se actualice en el hilo principal
+            DispatchQueue.main.async {
+                let alert = UIAlertController(
+                    title: "Has acabat!",
+                    message: String(format: "Temps final: %.1f segons. Amb %d errors!", finalTime, finalErrors),
+                    preferredStyle: .alert
+                )
 
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(alert, animated: true)
+            }
+        }
     }
 }
