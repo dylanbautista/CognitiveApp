@@ -3,9 +3,12 @@ import UIKit
 class AttentionVC: UIViewController {
 
     // MARK: - Voice Recorder
-    let recorder = VoiceRecorder()
+    let voiceRecorder = VoiceRecorder()
+    let userService = UserService()
+    let gameService = GameService()
 
-    
+    // MARK: - UI
+
     @IBOutlet var sequenceLabel: UILabel!
 
     // MARK: - Joc
@@ -14,19 +17,16 @@ class AttentionVC: UIViewController {
     private let seriesPerLength = 2
     private var currentSeries = 0
     private var currentSequence: [Int] = []
+
+    private var numErrors = 0
+    private let maxErrors = 4
     private var isGameOver = false
 
     // MARK: - Temps
-    private let maxTimePerSequence: TimeInterval = 10
-    private var sequenceTimer: Timer?
+    private let roundDuration: TimeInterval = 10
+    private var roundTimer: Timer?
+    private var pollingTimer: Timer?
     private var elapsedTime: TimeInterval = 0
-
-    private var spokenWords: [String] = []
-    private var listeningTask: Task<Void, Never>?
-
-
-    // Estadístiques
-    private var numErrors = 0
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -54,7 +54,7 @@ class AttentionVC: UIViewController {
     private func nextRound() {
         guard !isGameOver else { return }
 
-        if currentLength > maxLength {
+        if numErrors >= maxErrors || currentLength > maxLength {
             finishGame()
             return
         }
@@ -66,85 +66,35 @@ class AttentionVC: UIViewController {
 
         generateSequence()
         showSequence()
-        startListening()
-        startSequenceTimer()
+        startRound()
     }
 
     private func generateSequence() {
-        currentSequence = (0..<currentLength).map { _ in
-                Int.random(in: 0...9)
-            }
+        currentSequence = (0..<currentLength).map {
+            Int.random(_ in: 0...9)
+        }
     }
 
     private func showSequence() {
-        sequenceLabel.text = currentSequence.map { "\($0)" }.joined(separator: " ")
-        elapsedTime = 0
+        sequenceLabel.text = currentSequence.map(String.init).joined(separator: " ")
     }
 
-    // MARK: - Veu
-    private func startListening() {
-        spokenWords = []
-
-        listeningTask = Task {
-            do {
-                let stream = try await recorder.startVoiceRecording()
-
-                for try await transcription in stream {
-                    print(transcription) // debug
-
-                    spokenWords.append(transcription)
-
-                    // Si volem aturar manualment
-                    if transcription.lowercased().contains("stop listening") {
-                        voiceRecorder.stopVoiceRecording()
-                        break
-                    }
-                }
-
-                await MainActor.run {
-                    self.sequenceTimer?.invalidate()
-                    let numbers = self.convertWordsToNumbers(self.spokenWords)
-                    self.checkAnswer(userNumbers: numbers)
-                }
-
-            } catch {
-                print("Error voice recorder: \(error)")
-            }
-        }
-    }
-
-
-    for try await transcription in recorder.startVoiceRecording() {
-        print(transcription)
-
-        if transcription.contains("stop listening") {
-            recorder.stopVoiceRecording()
-            break
-        }
-    }
-
-
-    // MARK: - Temporitzador
-    private func startSequenceTimer() {
-        sequenceTimer?.invalidate()
+    // MARK: - Ronda
+    private func startRound() {
         elapsedTime = 0
 
-        sequenceTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-            self.elapsedTime += 0.1
+        voiceRecorder.startRecording(paraules: true)
 
-            if self.elapsedTime >= self.maxTimePerSequence {
-                self.sequenceTimer?.invalidate()
-                self.recorder.stopVoiceRecording()
-                self.listeningTask?.cancel()
-                self.numErrors += 1
-                self.nextRound()
-            }
-        }
+        startPolling()
+        startRoundTimer()
     }
 
-    // MARK: - Comprovació
-    private func checkAnswer(userNumbers: [Int]) {
-        if userNumbers == currentSequence {
+    private func endRound(success: Bool) {
+        roundTimer?.invalidate()
+        pollingTimer?.invalidate()
+        voiceRecorder.stopRecording()
+
+        if success {
             currentSeries += 1
         } else {
             numErrors += 1
@@ -155,26 +105,90 @@ class AttentionVC: UIViewController {
         }
     }
 
+    // MARK: - Polling veu
+    private func startPolling() {
+        pollingTimer?.invalidate()
+
+        pollingTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
+            let results = self.voiceRecorder.getSessionResults()
+            let spokenNumbers = results.compactMap { Int($0) }
+            print("Spoken numbers: \(spokenNumbers)")
+
+            guard spokenNumbers.count >= self.currentSequence.count else { return }
+
+            let lastSpoken = Array(
+                spokenNumbers.suffix(self.currentSequence.count)
+            )
+
+            if lastSpoken == self.currentSequence {
+                self.endRound(success: true)
+            }
+        }
+    }
+
+    // MARK: - Temporitzador de ronda
+    private func startRoundTimer() {
+        roundTimer?.invalidate()
+
+        roundTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            self.elapsedTime += 0.1
+
+            if self.elapsedTime >= self.roundDuration {
+                self.endRound(success: false)
+            }
+        }
+    }
+
     // MARK: - Final del joc
     private func finishGame() {
         isGameOver = true
-        sequenceTimer?.invalidate()
+        roundTimer?.invalidate()
+        roundTimer = nil
+        pollingTimer?.invalidate()
+        pollingTimer = nil
 
-        let alert = UIAlertController(
-            title: "Joc finalitzat",
-            message: "Errors totals: \(numErrors)",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
-    }
+        voiceRecorder.stopRecording()
 
-    // MARK: - Utils
-        private func convertWordsToNumbers(_ words: [String]) -> [Int] {
-        return words.compactMap { word in
-            Int(word.trimmingCharacters(in: .whitespacesAndNewlines))
+        let finalErrors = self.numErrors
+        userService.fetchCurrentUser { [weak self] result in
+            
+            guard let self = self else { return }
+            
+            // 3. Intentar guardar el resultado solo si hay un usuario logueado
+            if case .success(let user) = result {
+                
+                // Crear el objeto GameResult con el ID del usuario
+                let resultToSave = GameResult(
+                    userId: user.id,
+                    gameType: .processingSpeed, // Usamos .processingSpeed como ejemplo del enum
+                    date: Date(),
+                    additionalData: [
+                        "time": AnyCodable(finalTime),
+                        "errors": AnyCodable(finalErrors)
+                    ]
+                )
+                
+                // Llamar a la función de guardado (asíncrona)
+                self.gameService.saveGameResult(resultToSave) { saveResult in
+                    if case .failure(let error) = saveResult {
+                        print("Error al guardar el resultado: \(error.localizedDescription)")
+                    }
+                }
+            } else {
+                print("No se pudo obtener el usuario. Resultado no guardado.")
+            }
+
+
+            let alert = UIAlertController(
+                title: "Joc finalitzat",
+                message: """
+                        Errors: \(numErrors)
+                        Longitud màxima assolida: \(currentLength)
+                        """,
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
         }
     }
-    
-    
 }
