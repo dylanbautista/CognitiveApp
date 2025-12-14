@@ -4,8 +4,8 @@ class SurveyService {
     private let db = Firestore.firestore()
     private let collectionName = "UserEventLogs"
 
-    // Obtener log del día; devuelve nil si no existe
-    func getTodayLog(for userId: String, completion: @escaping (UserEventLog?) -> Void) {
+    // 1. Obtener el Log ÚNICO del día; devuelve nil si no existe
+    func getTodayLogEntry(for userId: String, completion: @escaping (UserEventLog?) -> Void) {
         let today = Calendar.current.startOfDay(for: Date())
 
         db.collection(collectionName)
@@ -15,19 +15,28 @@ class SurveyService {
                 if let _ = error {
                     completion(nil)
                 } else {
+                    // Esperamos que solo haya un documento por usuario/día
                     let log = snapshot?.documents.compactMap { try? $0.data(as: UserEventLog.self) }.first
                     completion(log)
                 }
             }
     }
 
-    // Guardar o actualizar log del usuario
-    func saveOrUpdate(_ log: UserEventLog, completion: @escaping (Result<Void, Error>) -> Void) {
-        var logToSave = log
-        logToSave.date = Calendar.current.startOfDay(for: log.date)
+    // 2. Guardar o actualizar el UNICO log del usuario (maneja el array de IDs)
+    func saveOrUpdateLogEntry(_ log: UserEventLog, completion: @escaping (Result<Void, Error>) -> Void) {
+        
+        let logToSave = log
+        let dateKey = Calendar.current.startOfDay(for: log.date)
+        
+        let data: [String: Any] = [
+            "userId": logToSave.userId,
+            "optionIds": logToSave.optionIds, // Array de IDs
+            "date": dateKey
+        ]
+        
         let query = db.collection(collectionName)
             .whereField("userId", isEqualTo: logToSave.userId)
-            .whereField("date", isEqualTo: logToSave.date)
+            .whereField("date", isEqualTo: dateKey)
 
         query.getDocuments { snapshot, error in
             if let error = error {
@@ -36,14 +45,12 @@ class SurveyService {
             }
 
             if let doc = snapshot?.documents.first {
-                self.db.collection(self.collectionName).document(doc.documentID).setData([
-                    "userId": logToSave.userId,
-                    "optionId": logToSave.optionId,
-                    "date": logToSave.date
-                ], merge: true) { err in
+                // Si ya existe, actualiza el documento existente (reemplaza el array 'optionIds')
+                self.db.collection(self.collectionName).document(doc.documentID).setData(data, merge: false) { err in
                     if let err = err { completion(.failure(err)) } else { completion(.success(())) }
                 }
             } else {
+                // Si no existe, crea un nuevo documento
                 do {
                     let _ = try self.db.collection(self.collectionName).addDocument(from: logToSave) { err in
                         if let err = err { completion(.failure(err)) } else { completion(.success(())) }
@@ -52,7 +59,6 @@ class SurveyService {
                     completion(.failure(error))
                 }
             }
-
         }
     }
 
