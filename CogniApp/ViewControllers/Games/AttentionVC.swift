@@ -150,7 +150,7 @@ class AttentionVC: UIViewController {
         voiceRecorder.stopRecording()
 
         let finalErrors = self.numErrors
-    userService.fetchCurrentUser { [weak self] result in
+        userService.fetchCurrentUser { [weak self] result in
             
             guard let self = self else { return }
             
@@ -179,15 +179,16 @@ class AttentionVC: UIViewController {
             }
 
 
-        let alert = UIAlertController(
-            title: "Joc finalitzat",
-            message: """
-                     Errors: \(numErrors)
-                     Longitud màxima assolida: \(currentLength)
-                     """,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+            let alert = UIAlertController(
+                title: "Joc finalitzat",
+                message: """
+                        Errors: \(numErrors)
+                        Longitud màxima assolida: \(currentLength)
+                        """,
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
     }
 }
